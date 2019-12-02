@@ -29,8 +29,15 @@ The SQL_ID will be then stored together with the <i>execution plans</i> and the 
 
 When a subsequent submission of a previously submitted SQL is issued, will then be possible to perform a <i>soft parse</i> that consists essentially in reusing the <i>execution plan</i> produced by the previous <i>hard parse</i> of the same SQL statement, just looking-up the <i>shared SQL area</i> for the data associated to the same SQL_ID.
 
+========== approfondire ===========
+https://ora600tom.wordpress.com/tag/session-cached-cursor/
+Hard Parse: Parsing first time, nothing exists to bind peek
+Soft Parse :  SQL cursor is existing and executing not the first time.  Under the soft parse, bind peeking will happen and the new  plan will be generated based on the selectivity for that literal.
+Session Cached cursor (Softer Soft Parse):   Cursor is existing in the PGA, bind the new value and just execute.  This is the optimal way of an SQL execution – parse once and execute many.  Less CPU, less or no latches – just bind and execute.
+=============
+
 ### 1.2. How variable binding affects the generation of the SQL_ID
-As previously told, the SQL_ID generation is demanded to a hashing algorithm that takes as input the SQL statement text.
+As previously said, the SQL_ID generation is demanded to a hashing algorithm that takes as input the SQL statement text.
 
 Issuing this simple statements
 ```
@@ -104,3 +111,8 @@ For the aforementioned reasons, forcing cursor sharing is meant to be a temporar
 
 ### 2.2 The quest for literal SQLs
 http://intermediatesql.com/oracle/a-better-way-to-find-literal-sqls-in-oracle-10g/
+
+
+### 2.3 Bind Peeking
+https://ora600tom.wordpress.com/tag/session-cached-cursor/
+
